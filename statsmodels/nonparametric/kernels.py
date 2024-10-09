@@ -249,7 +249,7 @@ def bessel(n, h, Xi, x):
         The value of the kernel function at each training point.
     """
     sigma = 1 / h
-    distance_squared = np.linalg.norm(Xi - x, axis=1) ** 2 
+    distance_squared = np.sum((Xi - x) ** 2, axis=1)
     bessel_value = iv(n, sigma * distance_squared)
     return -bessel_value
 
