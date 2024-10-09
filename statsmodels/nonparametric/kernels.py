@@ -248,7 +248,7 @@ def bessel(n, h, Xi, x):
     kernel_value : ndarray, shape (nobs,)
         The value of the kernel function at each training point.
     """
-    sigma = 1 / h
+    sigma = 1 / h[0]
     distance_squared = np.sum((Xi - x) ** 2, axis=1)
     bessel_value = iv(n, sigma * distance_squared)
     return -bessel_value
