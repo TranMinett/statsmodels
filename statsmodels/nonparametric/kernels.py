@@ -13,6 +13,7 @@ NOTE: As it is, this module does not interact with the existing API
 
 import numpy as np
 from scipy.special import erf
+from scipy.special import iv 
 
 
 #TODO:
@@ -224,3 +225,31 @@ def wang_ryzin_reg(h, Xi, x):
     Suggested by Li and Racine in [1] ch.4
     """
     return h ** abs(Xi - x)
+
+
+def bessel(n, h, Xi, x):
+    """
+    Bessel Kernel for continuous variables. The implemented function follows 
+    the kernlab library formula in R.
+
+    Parameters
+    ----------
+    n : int
+        The order of the Bessel function.
+    h : 1-D ndarray, shape (K,)
+        The bandwidths used to estimate the value of the kernel function.
+    Xi : 1-D ndarray, shape (nobs,)
+        The value of the training set.
+    x : scalar
+        The value at which the kernel density is being estimated.
+
+    Returns
+    -------
+    kernel_value : ndarray, shape (nobs,)
+        The value of the kernel function at each training point.
+    """
+    sigma = 1 / h
+    distance_squared = np.linalg.norm(Xi - x, axis=1) ** 2 
+    bessel_value = iv(n, sigma * distance_squared)
+    return -bessel_value
+
